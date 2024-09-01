@@ -9,5 +9,20 @@
 <p>Title: <span th:text="${board.title}"></span></p>
 <p>Content: <span th:text="${board.content}"></span></p>
 <a th:href="@{/boards}">Back to List</a>
+
+<h2>댓글</h2>
+<form action="#" th:action="@{/comments/add}" method="post">
+    <input type="hidden" name="boardId" th:value="${board.id}" />
+    <textarea name="content" placeholder="댓글작성"></textarea>
+    <button type="submit">Add Comment</button>
+</form>
+
+<div id="comments">
+    <ul>
+        <li th:each="comment : ${comments}">
+            <p th:text="${comment.content}">Comment content</p>
+        </li>
+    </ul>
+</div>
 </body>
 </html>

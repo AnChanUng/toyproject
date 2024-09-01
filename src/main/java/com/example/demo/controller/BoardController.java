@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Board;
+import com.example.demo.entity.Comment;
 import com.example.demo.service.BoardService;
+import com.example.demo.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,11 +17,14 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
+    @Autowired
+    private CommentService commentService;
+
     @GetMapping
     public String getAllBoards(Model model) {
         List<Board> boards = boardService.findAll();
         model.addAttribute("boards", boards);
-        return "board"; // This should match board.html in src/main/resources/templates
+        return "board";
     }
 
     @PostMapping
@@ -28,19 +33,24 @@ public class BoardController {
         board.setTitle(title);
         board.setContent(content);
         boardService.save(board);
-        return "redirect:/boards"; // Redirect to the list of boards
+        return "redirect:/boards";
     }
 
     @GetMapping("/{id}")
     public String getBoardById(@PathVariable Long id, Model model) {
-        boardService.findById(id).ifPresent(board -> model.addAttribute("board", board));
-        return "board-detail"; // This should match board-detail.html in src/main/resources/templates
+        boardService.findById(id).ifPresent(board -> {
+            model.addAttribute("board", board);
+
+            List<Comment> comments = commentService.getCommentsByBoardId(id);
+            model.addAttribute("comments", comments);
+        });
+        return "board-detail";
     }
 
     @GetMapping("/{id}/edit")
     public String editBoard(@PathVariable Long id, Model model) {
         boardService.findById(id).ifPresent(board -> model.addAttribute("board", board));
-        return "board-edit"; // This should match board-edit.html in src/main/resources/templates
+        return "board-edit";
     }
 
     @PostMapping("/{id}/edit")

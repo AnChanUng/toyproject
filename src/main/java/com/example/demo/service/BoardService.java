@@ -14,6 +14,9 @@ public class BoardService {
     @Autowired
     private BoardRepository boardRepository;
 
+    @Autowired
+    private CommentService commentService;
+
     public List<Board> findAll() {
         return boardRepository.findAll();
     }
@@ -27,6 +30,7 @@ public class BoardService {
     }
 
     public void deleteById(Long id) {
+        commentService.deleteCommentByBoardId(id);
         boardRepository.deleteById(id);
     }
 
