@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Boards</title>
+    <meta charset="UTF-8">
+    <title>KaKaoMap Study</title>
+    <style>
+        #map { width: 500px; height: 400px; }
+    </style>
 </head>
 <body>
 <h1>Board List</h1>
@@ -27,10 +31,34 @@
     </tr>
     </tbody>
 </table>
+
 <form action="#" th:action="@{/boards}" method="post">
     <input type="text" name="title" placeholder="Title" />
     <textarea name="content" placeholder="Content"></textarea>
     <button type="submit">Create Board</button>
 </form>
+
+<div id="map" style="width: 500px; height: 400px;"></div>
+
+<div id="map"></div>
+
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=6f7ed1e144c78cfc510fe5f15ff5d5ac"></script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if the Kakao Maps API is loaded
+        if (typeof kakao !== 'undefined') {
+            var container = document.getElementById('map'); // 지도를 담을 영역의 DOM 레퍼런스
+            var options = { // 지도를 생성할 때 필요한 기본 옵션
+                center: new kakao.maps.LatLng(37.5665, 126.978), // 서울 중심좌표
+                level: 3 // 확대/축소 정도
+            };
+
+            var map = new kakao.maps.Map(container, options); // 지도 생성 및 객체 리턴
+        } else {
+            console.error('Kakao Maps API is not loaded.');
+        }
+    });
+</script>
+
 </body>
 </html>

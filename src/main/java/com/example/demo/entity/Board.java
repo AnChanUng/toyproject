@@ -5,10 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity // 너엔티티야
-@Data // 너 데이터야
-@NoArgsConstructor // 자동생성
-@AllArgsConstructor //
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,5 +19,11 @@ public class Board {
 
     @Column(name = "content")
     private String content;
+
+    @Column(name = "latitude")
+    private Double latitude;  // 위도
+
+    @Column(name = "longitude")
+    private Double longitude; // 경도
 
 }
