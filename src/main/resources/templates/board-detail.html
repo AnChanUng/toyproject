@@ -21,6 +21,9 @@
     <ul>
         <li th:each="comment : ${comments}">
             <p th:text="${comment.content}">Comment content</p>
+            <a th:href="@{/comments/{id}/edit(id=${comment.id})}">Edit</a>
+            <a th:href="@{/comments/{id}/delete(id=${comment.id})}"
+               onclick="return confirm('삭제 할거냐 찬의야?');">Delete</a>
         </li>
     </ul>
 </div>

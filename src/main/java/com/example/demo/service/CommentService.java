@@ -7,8 +7,8 @@ import com.example.demo.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommentService {
@@ -26,7 +26,6 @@ public class CommentService {
         Comment comment = new Comment();
         comment.setBoard(board);
         comment.setContent(content);
-
         commentRepository.save(comment);
     }
 
@@ -38,4 +37,17 @@ public class CommentService {
         List<Comment> comments = commentRepository.findByBoardId(boardId);
         commentRepository.deleteAll(comments);
     }
+
+    public Optional<Comment> findById(Long id) {
+        return commentRepository.findById(id);
+    }
+
+    public Comment save(Comment comment) {
+        return commentRepository.save(comment);
+    }
+
+    public void deleteById(Long id) {
+        commentRepository.deleteById(id);
+    }
+
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 @Controller
@@ -21,51 +22,84 @@ public class BoardController {
     private CommentService commentService;
 
     @GetMapping
-    public String getAllBoards(Model model) {
+    public ModelAndView getAllBoards(Model model) {
+
+        ModelAndView modelAndView = new ModelAndView();
+
         List<Board> boards = boardService.findAll();
         model.addAttribute("boards", boards);
-        return "board";
+
+        modelAndView.setViewName("board");
+
+        return modelAndView;
     }
 
     @PostMapping
-    public String createBoard(@RequestParam String title, @RequestParam String content) {
+    public ModelAndView createBoard(@RequestParam String title, @RequestParam String content) {
+
+        ModelAndView modelAndView = new ModelAndView();
+
         Board board = new Board();
         board.setTitle(title);
         board.setContent(content);
         boardService.save(board);
-        return "redirect:/boards";
+
+        modelAndView.setViewName("redirect:/boards");
+        return modelAndView;
     }
 
     @GetMapping("/{id}")
-    public String getBoardById(@PathVariable Long id, Model model) {
+    public ModelAndView getBoardById(@PathVariable Long id, Model model) {
+
+        ModelAndView modelAndView = new ModelAndView();
+
         boardService.findById(id).ifPresent(board -> {
             model.addAttribute("board", board);
 
             List<Comment> comments = commentService.getCommentsByBoardId(id);
             model.addAttribute("comments", comments);
         });
-        return "board-detail";
+
+        modelAndView.setViewName("board-detail");
+        return modelAndView;
     }
 
     @GetMapping("/{id}/edit")
-    public String editBoard(@PathVariable Long id, Model model) {
+    public ModelAndView editBoard(@PathVariable Long id, Model model) {
+
+        ModelAndView modelAndView = new ModelAndView();
+
         boardService.findById(id).ifPresent(board -> model.addAttribute("board", board));
-        return "board-edit";
+        modelAndView.setViewName("board-edit");
+
+        return modelAndView;
     }
 
     @PostMapping("/{id}/edit")
-    public String updateBoard(@PathVariable Long id, @RequestParam String title, @RequestParam String content) {
+    public ModelAndView updateBoard(@PathVariable Long id, @RequestParam String title, @RequestParam String content) {
+
+        ModelAndView modelAndView = new ModelAndView();
+
         Board board = new Board();
         board.setId(id);
         board.setTitle(title);
         board.setContent(content);
         boardService.save(board);
-        return "redirect:/boards";
+
+        modelAndView.setViewName("redirect:/boards");
+        return modelAndView;
     }
 
     @GetMapping("/{id}/delete")
-    public String deleteBoard(@PathVariable Long id) {
+    public ModelAndView deleteBoard(@PathVariable Long id) {
+
+        ModelAndView modelAndView = new ModelAndView();
+
         boardService.deleteById(id);
-        return "redirect:/boards";
+
+        modelAndView.setViewName("redirect:/boards");
+        return modelAndView;
+
     }
+
 }

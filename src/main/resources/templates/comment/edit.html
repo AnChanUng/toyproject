@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Comment</title>
+</head>
+<body>
+<h1>Edit Comment</h1>
+
+<!-- 댓글 수정 폼 -->
+<form action="#" th:action="@{/comments/{id}/edit(id=${comment.id})}" method="post">
+    <label for="content">Comment:</label>
+    <textarea id="content" name="content" required th:text="${comment.content}"></textarea>
+    <button type="submit">Update Comment</button>
+</form>
+
+<!-- 게시물 상세 페이지로 돌아가는 링크 -->
+<a th:href="@{/boards/{id}(id=${comment.boardId})}">Back to Board Detail</a>
+
+</body>
+</html>
